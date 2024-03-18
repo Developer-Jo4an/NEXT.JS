@@ -1,7 +1,6 @@
-import React from 'react'
-import './styles.css'
+import HomeContent from '@/components/home/content/HomeContent'
 
-import HomeContent from '@/content/HomeContent'
+import './styles.css'
 export default function Home() {
     return (
         <div className={'home-container'}>
