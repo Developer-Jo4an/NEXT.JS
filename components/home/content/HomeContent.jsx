@@ -1,26 +1,38 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+
+import Preloader from '@/components/home/preloader/Preloader'
+import Authorization from '@/components/home/authorization/Authorization'
+import Navigation from '@/components/home/navigation/Navigation'
 
 import './styles.css'
 
-const COLUMN_LOCATION = 'column'
-const ROW_LOCATION = 'row'
+const PRELOADER_ROUTE = 'preloader'
+const AUTHORIZATION_ROUTE = 'authorization'
+
 const HomeContent = () => {
 
-    const [location, setLocation] = useState(COLUMN_LOCATION)
+    const [location, setLocation] = useState(PRELOADER_ROUTE)
+
+    const homeComponents = useMemo(() =>[
+        { route: PRELOADER_ROUTE, component: <Preloader /> },
+        { route: AUTHORIZATION_ROUTE, component: <Authorization /> },
+    ], [])
+
+    const setLocationCallback = useCallback(route => setLocation(route), [])
 
     return (
         <div className={'container'}>
-            <h1>Location: { location }</h1>
-            <div className={`squares-wrapper container-${ location }-mode`}>
-                <div className={'square'}></div>
-                <div className={'square'}></div>
+            <div className={'home-content-wrapper'}>
+                { homeComponents.map(({ route, component }) => {
+                    return (
+                        <div key={ route } className={`component-wrapper ${route === location ? 'show-component' : ''}`}>
+                            { component }
+                        </div>
+                    )
+                }) }
             </div>
-            <button
-                className={'toggle-location'}
-                onClick={ () => setLocation(prev => prev === COLUMN_LOCATION ? ROW_LOCATION : COLUMN_LOCATION) }
-            >{ location }
-            </button>
+            <Navigation components={ homeComponents } setLocation={ setLocationCallback } />
         </div>
     )
 }
