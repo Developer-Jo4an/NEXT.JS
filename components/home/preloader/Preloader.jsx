@@ -1,10 +1,9 @@
 import './styles.css'
-import './../../../styles/home/component/styles.css'
 
 const Preloader = () => {
     return (
-        <div className={'home-component preloader'}>
-            <h2>Preloader</h2>
+        <div className={'preloader'}>
+            <div className='lds-dual-ring'></div>
         </div>
     )
 }

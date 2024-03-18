@@ -1,30 +1,38 @@
-'use client'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchTodosAction, selectTodosState } from '@/redux/todosSlice/todosSlice'
+import { useRouter } from 'next/navigation'
 
 import Preloader from '@/components/home/preloader/Preloader'
 import Authorization from '@/components/home/authorization/Authorization'
-import Navigation from '@/components/home/navigation/Navigation'
 
 import './styles.css'
 
-const PRELOADER_ROUTE = 'preloader'
-const AUTHORIZATION_ROUTE = 'authorization'
-
 const HomeContent = () => {
+    const router = useRouter()
+    const dispatch = useDispatch()
 
-    const [location, setLocation] = useState(PRELOADER_ROUTE)
+    const { isLoading, error, todos } = useSelector(selectTodosState)
 
-    const homeComponents = useMemo(() =>[
-        { route: PRELOADER_ROUTE, component: <Preloader /> },
-        { route: AUTHORIZATION_ROUTE, component: <Authorization /> },
-    ], [])
+    useEffect(() => {
+        dispatch(fetchTodosAction())
+    }, [])
+
+    if (error) {
+        console.log(error)
+        router.push('/pages/error')
+    }
 
     return (
         <div className={'container'}>
             <div className={'home-content-wrapper'}>
-                { homeComponents.find(({ route, component }) => route === location).component }
+                {
+                    isLoading ?
+                    <Preloader />
+                    :
+                    <Authorization />
+                }
             </div>
-            <Navigation components={ homeComponents } setLocation={ setLocation } />
         </div>
     )
 }

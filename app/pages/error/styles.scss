@@ -1,0 +1,27 @@
+.error-page {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 20px;
+    border: 2px solid #000;
+
+    margin: 20px;
+}
+
+.error-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.error-name {
+    font-size: 24px;
+
+    font-weight: 600;
+}
+
+.error-message {
+    font-size: 24px;
+}

@@ -1,9 +1,15 @@
 .container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 20px;
   padding: 20px;
+}
+
+.home-content-wrapper {
+  flex: 1;
+  display: flex;
 }
 
 /*# sourceMappingURL=styles.css.map */

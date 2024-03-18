@@ -17,6 +17,7 @@ body {
 
 main {
   flex-grow: 1;
+  display: flex;
 }
 
 /*# sourceMappingURL=zeroing.css.map */
