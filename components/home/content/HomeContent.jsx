@@ -19,7 +19,6 @@ const HomeContent = () => {
         { route: AUTHORIZATION_ROUTE, component: <Authorization /> },
     ], [])
 
-    const setLocationCallback = useCallback(route => setLocation(route), [])
 
     return (
         <div className={'container'}>
@@ -32,7 +31,7 @@ const HomeContent = () => {
                     )
                 }) }
             </div>
-            <Navigation components={ homeComponents } setLocation={ setLocationCallback } />
+            <Navigation components={ homeComponents } setLocation={ setLocation } />
         </div>
     )
 }
