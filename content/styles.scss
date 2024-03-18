@@ -1,0 +1,60 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 20px;
+
+    padding: 20px;
+}
+
+.squares-wrapper {
+    display: flex;
+    gap: 10px;
+
+    padding: 20px;
+
+    border: 2px solid #000;
+    border-radius: 20px;
+}
+
+.container-column-mode {
+    flex-direction: column;
+}
+
+.container-row-mode {
+    flex-direction: row;
+}
+
+.square {
+    width: 300px;
+    height: 300px;
+
+    border-radius: 20px;
+
+    background-color: #000;
+}
+
+.toggle-location {
+    padding: 20px 40px;
+
+    border-radius: 20px;
+
+    border: 2px solid #000;
+
+    font-size: 24px;
+
+    background-color: #fff;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+    &:hover {
+        background-color: #000;
+
+        color: #fff;
+    }
+
+}
