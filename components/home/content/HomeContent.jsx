@@ -22,8 +22,17 @@ const HomeContent = () => {
         { route: AUTHORIZATION_LOCATION, component: <Authorization /> }
     ], [])
 
-    useEffect(() => { if (location === PRELOADER_LOCATION) dispatch(fetchTodosAction()) }, [location])
-    useEffect(() => { if (!isLoading) setLocation(AUTHORIZATION_LOCATION) }, [isLoading])
+    useEffect(() => {
+        if (location === PRELOADER_LOCATION)
+            dispatch(fetchTodosAction()) },
+        [location]
+    )
+
+    useEffect(() => {
+        if (!isLoading)
+            setLocation(AUTHORIZATION_LOCATION) },
+        [isLoading]
+    )
 
     return (
         <div className={'container'}>
