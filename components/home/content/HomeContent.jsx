@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTodosAction, selectTodosState } from '@/redux/todosSlice/todosSlice'
+import { fetchTodosAction, selectTodosState } from '@/redux/appSlice/appSlice'
 
 import Preloader from '@/components/home/preloader/Preloader'
 import Authorization from '@/components/home/authorization/Authorization'
@@ -13,7 +13,7 @@ const AUTHORIZATION_LOCATION = 'authorization'
 
 const HomeContent = () => {
     const dispatch = useDispatch()
-    const { isLoading, error, todos } = useSelector(selectTodosState)
+    const { isLoading } = useSelector(selectTodosState)
 
     const [location, setLocation] = useState(PRELOADER_LOCATION)
 
@@ -29,17 +29,14 @@ const HomeContent = () => {
     )
 
     useEffect(() => {
-        if (!isLoading)
-            setLocation(AUTHORIZATION_LOCATION) },
+        if (!isLoading) setLocation(AUTHORIZATION_LOCATION) },
         [isLoading]
     )
 
     return (
         <div className={'container'}>
             <div className={'home-content-wrapper'}>
-                {
-                    homeComponents.find(({ route, component }) => route === location).component
-                }
+                { homeComponents.find(({ route, component }) => route === location).component }
             </div>
             <Navigation setLocation={ setLocation } components={ homeComponents } />
         </div>

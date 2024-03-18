@@ -1,31 +1,37 @@
 import { asyncThunkCreator, buildCreateSlice } from '@reduxjs/toolkit'
 
-import { RequestTodosHandler } from '@/handlers/todos/RequestTodosHandler'
-import { RequestTodosService } from '@/services/todos/RequestTodosService'
+import { RequestAppHandler } from '@/handlers/app/RequestAppHandler'
+import { RequestAppService } from '@/services/app/RequestAppService'
 
 const createAsyncSlice = buildCreateSlice({ creators: { asyncThunk: asyncThunkCreator } })
 
 const initialState = {
     isLoading: true,
     error: null,
-    todos: []
+    todos: [],
+    userData: {}
 }
 
-export const todosSlice = createAsyncSlice({
-    name: 'todos',
+export const appSlice = createAsyncSlice({
+    name: 'app',
     initialState,
     selectors: {
         selectTodosState: sliceState => sliceState,
         selectTodosTodos: sliceState => sliceState.todos,
+        selectAuthUserData: sliceState => sliceState.userData,
         selectTodosIsLoading: sliceState => sliceState.isLoading,
-        selectTodosError: sliceState => sliceState.error
+        selectTodosError: sliceState => sliceState.error,
     },
     reducers: create => ({
         fetchTodosAction: create.asyncThunk(
-            RequestTodosService.fetchTodos,
-            RequestTodosHandler.fetchTodos
+            RequestAppService.fetchTodos,
+            RequestAppHandler.fetchTodos
         ),
-        resetErrorTodosAction: create.reducer(state => {
+        fetchAuthAction: create.asyncThunk(
+            RequestAppService.fetchAuth,
+            RequestAppHandler.fetchAuth
+        ),
+        resetErrorAction: create.reducer(state => {
             state.error = null
         })
     })
@@ -34,11 +40,13 @@ export const todosSlice = createAsyncSlice({
 export const {
     selectTodosState,
     selectTodosTodos,
+    selectAuthUserData,
     selectTodosIsLoading,
     selectTodosError
-} = todosSlice.selectors
+} = appSlice.selectors
 
 export const {
     fetchTodosAction,
+    fetchAuthAction,
     resetErrorTodosAction
-} = todosSlice.actions
+} = appSlice.actions

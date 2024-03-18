@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { fetchAuthAction } from '@/redux/appSlice/appSlice'
 
-import { fetchAuthAction, selectAuthState } from '@/redux/authorizationSlice/authorizationSlice'
 
 import './styles.css'
 
@@ -19,7 +19,7 @@ const Authorization = () => {
         minLength: {
             value: 6,
             message: `${inputName} must be more than 6 symbols`
-        },
+        }
     })
 
     const userNameInputSettings = {

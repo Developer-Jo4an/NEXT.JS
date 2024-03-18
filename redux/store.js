@@ -1,11 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
-import { todosSlice } from '@/redux/todosSlice/todosSlice'
-import { authorizationSlice } from '@/redux/authorizationSlice/authorizationSlice'
+import { appSlice } from '@/redux/appSlice/appSlice'
 
 const rootReducer = combineReducers({
-    [todosSlice.name]: todosSlice.reducer,
-    [authorizationSlice.name]: authorizationSlice.reducer
+    [appSlice.name]: appSlice.reducer,
 })
 
 export const store = configureStore({
