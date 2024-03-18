@@ -1,15 +1,12 @@
-import React, { memo } from 'react'
-
 import './styles.css'
 import './../../../styles/home/component/styles.css'
 
-const Preloader = memo(() => {
-
+const Preloader = () => {
     return (
         <div className={'home-component preloader'}>
             <h2>Preloader</h2>
         </div>
     )
-})
+}
 
 export default Preloader
