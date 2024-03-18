@@ -1,7 +1,7 @@
 export class RequestTodosHandler {
     static fetchTodos = {
         pending: (state, action) => {
-
+            state.isLoading = true
         },
         fulfilled: (state, action) => {
             state.todos = action.payload
