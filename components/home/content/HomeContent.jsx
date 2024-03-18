@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import Preloader from '@/components/home/preloader/Preloader'
 import Authorization from '@/components/home/authorization/Authorization'
@@ -19,17 +19,10 @@ const HomeContent = () => {
         { route: AUTHORIZATION_ROUTE, component: <Authorization /> },
     ], [])
 
-
     return (
         <div className={'container'}>
             <div className={'home-content-wrapper'}>
-                { homeComponents.map(({ route, component }) => {
-                    return (
-                        <div key={ route } className={`component-wrapper ${route === location ? 'show-component' : ''}`}>
-                            { component }
-                        </div>
-                    )
-                }) }
+                { homeComponents.find(({ route, component }) => route === location).component }
             </div>
             <Navigation components={ homeComponents } setLocation={ setLocation } />
         </div>
