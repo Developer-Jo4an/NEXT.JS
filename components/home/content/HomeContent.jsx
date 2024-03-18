@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTodosAction, selectTodosState } from '@/redux/todosSlice/todosSlice'
+import { fetchTodosAction, resetErrorTodosAction, selectTodosState } from '@/redux/todosSlice/todosSlice'
 import { useRouter } from 'next/navigation'
 
 import Preloader from '@/components/home/preloader/Preloader'
@@ -21,7 +21,9 @@ const HomeContent = () => {
     if (error) {
         console.log(error)
         router.push('/pages/error')
+        dispatch(resetErrorTodosAction())
     }
+
 
     return (
         <div className={'container'}>

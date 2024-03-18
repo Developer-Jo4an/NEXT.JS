@@ -1,3 +1,3 @@
-export const SERVER_URL = 'https://jsonplaceholder.typicode.com/'
+export const SERVER_URL = 'https://jsonplaceholdr.typicode.com/'
 
 export const TODOS_GENERAL_URL = 'todos'

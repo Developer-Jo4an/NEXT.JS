@@ -24,7 +24,10 @@ export const todosSlice = createAsyncSlice({
         fetchTodosAction: create.asyncThunk(
             RequestTodosService.fetchTodos,
             RequestTodosHandler.fetchTodos
-        )
+        ),
+        resetErrorTodosAction: create.reducer(state => {
+            state.error = null
+        })
     })
 })
 
@@ -36,5 +39,6 @@ export const {
 } = todosSlice.selectors
 
 export const {
-    fetchTodosAction
+    fetchTodosAction,
+    resetErrorTodosAction
 } = todosSlice.actions
