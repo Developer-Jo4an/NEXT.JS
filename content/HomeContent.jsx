@@ -18,7 +18,7 @@ const HomeContent = () => {
             </div>
             <button
                 className={'toggle-location'}
-                onClick={ () => setLocation(prev => prev === COLUMN_LOCATION ? ROW_LOCATION : COLUMN_LOCATION)}
+                onClick={ () => setLocation(prev => prev === COLUMN_LOCATION ? ROW_LOCATION : COLUMN_LOCATION) }
             >{ location }
             </button>
         </div>
