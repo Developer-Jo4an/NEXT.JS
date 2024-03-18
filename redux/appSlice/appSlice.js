@@ -1,5 +1,4 @@
 import { asyncThunkCreator, buildCreateSlice } from '@reduxjs/toolkit'
-
 import { RequestAppHandler } from '@/handlers/app/RequestAppHandler'
 import { RequestAppService } from '@/services/app/RequestAppService'
 

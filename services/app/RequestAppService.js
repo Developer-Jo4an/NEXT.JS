@@ -1,7 +1,5 @@
 import axios from 'axios'
-
 import { RequestErrorService } from '@/error-services/RequestErrorService'
-
 import { AUTH_LOGIN, AUTH_URL, SERVER_URL, TODOS_GENERAL_URL } from '@/constants/urls'
 
 export class RequestAppService {

@@ -1,5 +1,4 @@
 import { memo } from 'react'
-
 import './styles.css'
 
 const Navigation = memo(({ components, setLocation }) => {

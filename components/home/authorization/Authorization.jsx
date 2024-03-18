@@ -1,45 +1,23 @@
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { fetchAuthAction } from '@/redux/appSlice/appSlice'
-
-
+import { PASSWORD, USERNAME } from '@/constants/variables'
+import { generalInputSettings, userNameInputSettings } from '@/utils/authorization'
 import './styles.css'
 
-const USERNAME = 'username'
-const PASSWORD = 'password'
-
 const Authorization = () => {
-
     const dispatch = useDispatch()
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
 
-    const generalInputSettings = inputName => ({
-        required: `Necessarily ${inputName}!`,
-        minLength: {
-            value: 6,
-            message: `${inputName} must be more than 6 symbols`
-        }
-    })
-
-    const userNameInputSettings = {
-        pattern: {
-            value: /^[A-Za-z]+$/,
-            message: `${USERNAME} must be in Latin characters only`
-        }
-    }
-
-    const errorGen = inputName => (
+    const errorGen = inputName =>
         errors?.[inputName] &&
         <p className={'auth-errors-info'}>
             { errors?.[inputName]?.message || `Invalid ${inputName}` }
         </p>
-    )
 
-    const onSubmit = data => {
-        dispatch(fetchAuthAction(data))
-        reset()
-    }
+
+    const onSubmit = data => { dispatch(fetchAuthAction(data)); reset() }
 
     return (
         <div className={'authorization'}>

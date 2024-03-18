@@ -1,15 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTodosAction, selectTodosState } from '@/redux/appSlice/appSlice'
-
+import { AUTHORIZATION_LOCATION, PRELOADER_LOCATION } from '@/constants/variables'
+import Navigation from '@/components/home/navigation/Navigation'
 import Preloader from '@/components/home/preloader/Preloader'
 import Authorization from '@/components/home/authorization/Authorization'
-
 import './styles.css'
-import Navigation from '@/components/home/navigation/Navigation'
-
-const PRELOADER_LOCATION = 'preloader'
-const AUTHORIZATION_LOCATION = 'authorization'
 
 const HomeContent = () => {
     const dispatch = useDispatch()
