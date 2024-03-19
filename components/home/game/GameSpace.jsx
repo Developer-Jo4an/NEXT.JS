@@ -37,7 +37,7 @@ const GameSpace = () => {
     useEffect(() => {
         const app = new Application()
         const assets = [{ alias: 'ball', src: ball }, { alias: 'background', src: background }]
-        const container = document.querySelector('.game-space')
+        const container = document.querySelector('.game__space')
 
         const activateGame = async () => {
             const controller = new GameController(container, assets, app)
