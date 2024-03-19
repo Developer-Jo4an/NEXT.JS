@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google'
 
-import '../styles/zeroing.css'
+import '../styles/zeroing/zeroing.css'
 
 const inter = Inter({ subsets: ['latin'] })
 

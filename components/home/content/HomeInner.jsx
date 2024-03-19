@@ -6,10 +6,9 @@ import Preloader from '@/components/home/preloader/Preloader'
 import Authorization from '@/components/home/authorization/Authorization'
 import Error from '@/components/home/error/Error'
 import Game from '@/components/home/game/Game'
-import './styles.css'
 
-const RootContent = () => {
-    const dispatch = useDispatch()
+const HomeInner = () => {
+	const dispatch = useDispatch()
 
 	const location = useSelector(selectAppLocation)
 
@@ -22,13 +21,7 @@ const RootContent = () => {
 
 	useEffect(() => { dispatch(fetchTodosAction()) }, [])
 
-	return (
-		<div className={'container'}>
-			<div className={'home-content-wrapper'}>
-				{ homeComponents[location] }
-			</div>
-		</div>
-	)
+	return <>{ homeComponents[location] }</>
 }
 
-export default RootContent
+export default HomeInner

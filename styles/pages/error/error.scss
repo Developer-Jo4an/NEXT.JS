@@ -1,0 +1,29 @@
+.error {
+    gap: 20px;
+}
+
+.error__inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    border: 2px solid #000;
+    border-radius: 20px;
+
+    padding: 20px;
+}
+
+.error__name {
+    font-size: 24px;
+
+    font-weight: 600;
+}
+
+.error-message {
+    font-size: 24px;
+}
+
+.error__button {
+    svg { font-size: 20px; transition: .3s }
+    &:hover { svg { background-color: #000; color: #fff } }
+}

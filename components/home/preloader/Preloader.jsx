@@ -1,9 +1,9 @@
-import './styles.css'
+import Spinner from '@/components/general/Spinner'
 
 const Preloader = () => {
     return (
-        <div className={'preloader-container'}>
-            <div className={'preloader-spinner'}></div>
+        <div className={'preloader page'}>
+            <Spinner />
         </div>
     )
 }

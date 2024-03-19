@@ -1,18 +1,18 @@
-.preloader-container {
+.preloader {
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.preloader-spinner {
+.preloader__spinner {
     width: 80px;
     height: 80px;
 
     display: inline-block;
 
     &:after {
-        content: " ";
+        content: '';
 
         width: 64px;
         height: 64px;

@@ -1,21 +1,18 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { resetAppErrorAction, selectAppError } from '@/redux/appSlice/appSlice'
+import { useSelector } from 'react-redux'
+import { selectAppError } from '@/redux/appSlice/appSlice'
 import { IoReload } from 'react-icons/io5'
-import './styles.css'
 
 const Error = () => {
-	const dispatch = useDispatch()
-
 	const error = useSelector(selectAppError)
 
 	return (
-		<div className={'error-container'}>
-			<div className={'error-wrapper'}>
-				<div className={'error-name'}>{ error?.name }</div>
-				<div className={'error-message'}>{ error?.message }</div>
+		<div className={'error page'}>
+			<div className={'error__inner'}>
+				<div className={'error__name'}>{ error?.name }</div>
+				<div className={'error__message'}>{ error?.message }</div>
 			</div>
 			<button
-				className={'error-button'}
+				className={'error__button button'}
 				onClick={ () => window.location.reload() }
 			>Reload <IoReload /></button>
 		</div>
