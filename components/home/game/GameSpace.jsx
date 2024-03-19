@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Application } from 'pixi.js'
 import { selectTodosTodos } from '@/redux/appSlice/appSlice'
@@ -8,38 +8,25 @@ import GameController from '@/components/home/game/game-controller'
 
 const GameSpace = () => {
     const todos = useSelector(selectTodosTodos)
-    const [droppedTodos, setDroppedTodos] = useState([])
+    const [todoTitle, setTodoTitle] = useState('')
+    const ref = useRef()
 
-    const dropTodo = useCallback(() => {
-        setDroppedTodos(prevTodos => {
-            if (prevTodos.length === todos.length) return []
-
-            const getRandomTodo = () => {
-                const randomIndex = (Math.random() * (todos.length - 1)).toFixed(0)
-                const randomTodo = todos[randomIndex]
-                const isHaveTodo = !!prevTodos.find(todo => randomTodo.id === todo.id)
-
-                return [randomTodo, isHaveTodo]
-            }
-
-            let trueRandomTodo = false
-
-            while (!trueRandomTodo) {
-                const [todo, isHave] = getRandomTodo()
-
-                if (!isHave) trueRandomTodo = todo
-            }
-
-            return [...prevTodos, trueRandomTodo]
-        })
-    }, [])
+    const randomTodo = useMemo(() => ({
+        current: null,
+        variants: [...todos],
+        updateCurrent() {
+            if (!this.variants.length) this.variants = [...todos]
+            this.current = this.variants.splice(Math.floor(Math.random() * this.variants.length), 1)[0]
+            setTodoTitle(this.current.title)
+        }
+    }), [])
 
     useEffect(() => {
         const app = new Application()
         const assets = [{ alias: 'ball', src: ball }, { alias: 'background', src: background }]
-        const container = document.querySelector('.game__space')
+        const container = ref.current
 
-        const activateGame = async () => {
+        ;(async () => {
             const controller = new GameController(container, assets, app)
             await controller.setupGame()
             await controller.preloadGame()
@@ -48,13 +35,13 @@ const GameSpace = () => {
             controller.addBall()
             controller.activateBall()
 
-            controller.ball.on(controller.BALL_DROPPED, dropTodo)
+            controller.ball.on(controller.BALL_DROPPED, () => randomTodo.updateCurrent())
+        })()
+    }, [])
 
-        }; activateGame()
-    })
     return (
-        <div className={'game__space'}>
-          <p className={'game__space-textarea'}>{ droppedTodos.at(-1)?.title }</p>
+        <div className={'game__space'} ref={ref}>
+            <p className={'game__space-textarea'}>{ todoTitle }</p>
         </div>
     )
 }
