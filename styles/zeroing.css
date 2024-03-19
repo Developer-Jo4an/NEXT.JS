@@ -3,16 +3,17 @@
   margin: 0;
   text-decoration: none;
   list-style: none;
+  border: 0;
   outline: 0;
-  transition: 0s;
-  border: none;
+  font-size: 16px;
+  background-color: #fff;
+  box-sizing: border-box;
 }
 
 body {
   min-height: 100vh;
   min-width: 100vw;
   display: flex;
-  flex-direction: column;
 }
 
 main {

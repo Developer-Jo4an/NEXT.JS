@@ -1,56 +1,70 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
-import { fetchAuthAction } from '@/redux/appSlice/appSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAuthAction, resetAppErrorAction, selectAppError } from '@/redux/appSlice/appSlice'
 import { PASSWORD, USERNAME } from '@/constants/variables'
 import { generalInputSettings, userNameInputSettings } from '@/utils/authorization'
+import { CiWarning } from 'react-icons/ci'
 import './styles.css'
 
 const Authorization = () => {
     const dispatch = useDispatch()
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm()
+    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm()
 
-    const errorGen = inputName =>
-        errors?.[inputName] &&
-        <p className={'auth-errors-info'}>
-            { errors?.[inputName]?.message || `Invalid ${inputName}` }
-        </p>
+	const error = useSelector(selectAppError)
+	const username = watch(USERNAME)
+	const password = watch(PASSWORD)
+	const errorGen = inputName =>
+		errors?.[inputName] &&
+		<p className={'authorization-error-info'}>
+			<CiWarning />
+			{ errors?.[inputName]?.message || `Invalid ${inputName}` }
+		</p>
 
+	useEffect(() => { if (error?.message) dispatch(resetAppErrorAction()) }, [username, password])
 
     const onSubmit = data => { dispatch(fetchAuthAction(data)); reset() }
 
     return (
-        <div className={'authorization'}>
-            <h2>Authorization</h2>
-            <form onSubmit={ handleSubmit(onSubmit) } className={'auth-form'}>
-                <label className={'auth-form-label'}>
-                    { USERNAME }:
-                    <input
-                        type={ 'text' }
-                        { ...register(USERNAME, { ...generalInputSettings(USERNAME), ...userNameInputSettings })}
-                        className={'auth-form-input'}
-                    />
-                </label>
-                <label className={'auth-form-label'}>
-                    { PASSWORD }:
-                    <input
-                        type={ 'password' }
-                        { ...register(PASSWORD, { ...generalInputSettings(USERNAME) })}
-                        className={'auth-form-input'}
-                    />
-                </label>
-                <div className={'auth-errors'}>
-                    { errorGen(USERNAME) }
-                    { errorGen(PASSWORD) }
-                </div>
-                <label>
-                    <input
-                        type={'submit'}
-                        className={ 'auth-form-submit-btn' }
-                        value={ 'Auth' }
-                    />
-                </label>
-            </form>
+        <div className={'authorization-container'}>
+	        <div className={'authorization-wrapper'}>
+		        <h2 className={'authorization-header'}>Authorization</h2>
+		        <form
+			        onSubmit={handleSubmit(onSubmit)}
+			        className={'authorization-form'}
+		        >
+			        <label className={'authorization-form-label'}>
+				        { USERNAME }:
+				        <input
+					        type={'text'}
+					        { ...register(USERNAME, {...generalInputSettings(USERNAME), ...userNameInputSettings}) }
+					        className={'authorization-form-input'}
+				        />
+			        </label>
+			        <div className={'authorization-error'}>{errorGen(USERNAME)}</div>
+			        <label className={'authorization-form-label'}>
+				        { PASSWORD }:
+				        <input
+					        type={'password'}
+					        { ...register(PASSWORD, {...generalInputSettings(PASSWORD)}) }
+					        className={'authorization-form-input'}
+				        />
+			        </label>
+			        <div className={'authorization-error'}>{ errorGen(PASSWORD) }</div>
+			        <div className={'authorization-form-buttons'}>
+				        <input
+					        type={'submit'}
+					        className={'authorization-form-submit-btn'}
+					        value={'Auth'}
+				        />
+			        </div>
+			        {
+				        error?.message &&
+					    <p className={'authorization-error-info'}><CiWarning />{error.message}</p>
+			        }
+		        </form>
+	        </div>
         </div>
     )
 }

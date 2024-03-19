@@ -6,8 +6,7 @@ export class RequestAppService {
     static async fetchTodos(args, thunkAPI) {
         try {
             const todos = await axios.get(`${SERVER_URL}/${TODOS_GENERAL_URL}`)
-            return RequestErrorService.checkRequestError(todos.data, TODOS_GENERAL_URL)
-
+	        return RequestErrorService.checkRequestError(todos.data, TODOS_GENERAL_URL)
         } catch (e) {
             return thunkAPI.rejectWithValue(e)
         }

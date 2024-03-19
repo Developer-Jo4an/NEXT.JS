@@ -1,14 +1,15 @@
 'use client'
 import { Provider } from 'react-redux'
 import { store } from '@/redux/store'
-import HomeContent from '@/components/home/content/HomeContent'
+import RootContent from '@/components/home/content/RootContent'
 import './styles.css'
 
-export default function Home() {
-    return (
+export default function Root() {
+
+	return (
         <Provider store={ store }>
             <div className={'home-container'}>
-                <HomeContent />
+                <RootContent />
             </div>
         </Provider>
     )

@@ -1,0 +1,65 @@
+.error-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.error-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    border: 2px solid #000;
+    border-radius: 20px;
+
+    padding: 20px;
+}
+
+.error-name {
+    font-size: 24px;
+
+    font-weight: 600;
+}
+
+.error-message {
+    font-size: 24px;
+}
+
+.error-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    border: 2px solid #000;
+    border-radius: 20px;
+
+    padding: 20px;
+    
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+    svg {
+        font-size: 20px;
+
+        transition: .3s
+    }
+
+    &:hover {
+        background-color: #000;
+
+        color: #fff;
+
+        svg {
+            background-color: #000;
+
+            color: #fff
+        }
+    }
+}

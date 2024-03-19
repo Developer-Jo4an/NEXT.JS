@@ -2,8 +2,8 @@ import './styles.css'
 
 const Preloader = () => {
     return (
-        <div className={'preloader'}>
-            <div className='lds-dual-ring'></div>
+        <div className={'preloader-container'}>
+            <div className={'preloader-spinner'}></div>
         </div>
     )
 }
