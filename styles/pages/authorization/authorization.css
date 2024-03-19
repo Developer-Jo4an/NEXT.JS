@@ -1,0 +1,53 @@
+.authorization__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.authorization__title {
+  font-size: 32px;
+}
+
+.authorization__form {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.authorization__label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.authorization__input {
+  width: 300px;
+  height: 40px;
+  font-size: 18px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.authorization__error {
+  margin: 5px 0 20px 0;
+}
+
+.authorization__buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.authorization__button {
+  width: 100px;
+  height: 40px;
+}
+
+/*# sourceMappingURL=authorization.css.map */

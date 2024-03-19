@@ -1,0 +1,182 @@
+* {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+  border: 0;
+  outline: 0;
+  font-size: 16px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  border: 2px solid #000;
+  font-size: 18px;
+  color: #000;
+  background-color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.preloader {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preloader__spinner {
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+}
+.preloader__spinner:after {
+  content: "";
+  width: 64px;
+  height: 64px;
+  display: block;
+  margin: 8px;
+  border-radius: 50%;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #000 transparent #000 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.error {
+  gap: 20px;
+}
+
+.error__inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.error__name {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.error-message {
+  font-size: 24px;
+}
+
+.error__button svg {
+  font-size: 20px;
+  transition: 0.3s;
+}
+.error__button:hover svg {
+  background-color: #000;
+  color: #fff;
+}
+
+.authorization__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.authorization__title {
+  font-size: 32px;
+}
+
+.authorization__form {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.authorization__label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.authorization__input {
+  width: 300px;
+  height: 40px;
+  font-size: 18px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.authorization__error {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(255, 0, 0, 0.7);
+  margin: 10px 0;
+}
+
+.authorization__buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.authorization__button {
+  width: 100px;
+  height: 40px;
+}
+
+.game__space-textarea {
+  padding: 20px;
+  border: 2px solid #000;
+  border-radius: 20px;
+}
+
+/*# sourceMappingURL=main.css.map */
