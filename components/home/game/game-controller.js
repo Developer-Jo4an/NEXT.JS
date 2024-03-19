@@ -4,12 +4,14 @@ import { gsap } from 'gsap'
 export default class GameController {
     BALL = 'ball'
     BACKGROUND = 'background'
+    BALL_DROPPED = 'ball-dropped'
     constructor(container = null, assets = null, app = null) {
         this.$container = container
         this.assets = assets
         this.app = app
-        this.ballEventClick = this.ballEventClick.bind(this)
         this.ball = null
+        this.ballEventClick = this.ballEventClick.bind(this)
+        this.ballAnimation = false
     }
 
     addApp(app) { this.app = app }
@@ -29,8 +31,8 @@ export default class GameController {
     }
 
     installGame() {
-        if (!this.app || this.$container.firstElementChild) return
-        this.$container.appendChild(this.app.canvas)
+        if (!this.app || this.$container.children.length === 2) return
+        this.$container.insertBefore(this.app.canvas, this.$container.firstElementChild)
     }
 
     async preloadGame() {
@@ -58,17 +60,24 @@ export default class GameController {
     }
 
     ballEventClick() {
-        gsap.to(
-            this.ball,
-            {
-                y: this.ball.y - this.app.screen.height / 2,
-                duration: 0.5,
-                ease: 'power2.out'
-            }
-        )
-        .yoyo(true)
-        .repeat(1)
-        .then(() => console.log(1))
+        if (!this.ballAnimation) {
+            this.ballAnimation = true
+            gsap.to(
+                this.ball,
+                {
+                    y: this.ball.y - this.app.screen.height / 2,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                }
+            )
+            .yoyo(true)
+            .repeat(1)
+            .then(() => {
+                this.ball.emit(this.BALL_DROPPED)
+                this.ballAnimation = false
+            })
+        }
+
     }
 
     activateBall() {
