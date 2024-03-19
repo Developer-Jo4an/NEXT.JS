@@ -26,11 +26,11 @@
         border-style: solid;
         border-color: #000 transparent #000 transparent;
 
-        animation: lds-dual-ring 1.2s linear infinite
+        animation: rotate 1.2s linear infinite
     }
 }
 
-@keyframes lds-dual-ring {
+@keyframes rotate {
     from { transform: rotate(0deg) }
     to { transform: rotate(360deg) }
 }

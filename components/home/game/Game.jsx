@@ -1,5 +1,4 @@
-import { lazy } from 'react'
-const GameSpace = lazy(() => import('./GameSpace'))
+import GameSpace from '@/components/home/game/GameSpace'
 
 const Game = () => {
 	return (

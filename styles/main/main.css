@@ -60,10 +60,10 @@ main {
   border-width: 6px;
   border-style: solid;
   border-color: #000 transparent #000 transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
+  animation: rotate 1.2s linear infinite;
 }
 
-@keyframes lds-dual-ring {
+@keyframes rotate {
   from {
     transform: rotate(0deg);
   }
@@ -173,7 +173,27 @@ main {
   height: 40px;
 }
 
+.game {
+  align-items: normal;
+}
+
+.game__space {
+  max-width: 100vw;
+  max-height: 100vh;
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+}
+.game__space canvas {
+  min-width: 320px;
+  width: 100%;
+}
+
 .game__space-textarea {
+  position: absolute;
+  left: 50%;
+  top: 40px;
+  transform: translateX(-50%);
   padding: 20px;
   border: 2px solid #000;
   border-radius: 20px;

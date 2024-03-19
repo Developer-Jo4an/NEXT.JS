@@ -1,47 +1,49 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Application } from 'pixi.js'
 import { selectTodosTodos } from '@/redux/appSlice/appSlice'
-import ball from '@/public/assets/ball/ball.png'
-import background from '@/public/assets/background/background.png'
-import GameController from '@/components/home/game/game-controller'
+import Spinner from '@/components/general/Spinner'
 
 const GameSpace = () => {
     const todos = useSelector(selectTodosTodos)
+
     const [todoTitle, setTodoTitle] = useState('')
-    const ref = useRef()
+	const [isLoading, setLoading] = useState(true)
+
+    const gameWrapperRef = useRef()
 
     const randomTodo = useMemo(() => ({
-        current: null,
-        variants: [...todos],
-        updateCurrent() {
-            if (!this.variants.length) this.variants = [...todos]
-            this.current = this.variants.splice(Math.floor(Math.random() * this.variants.length), 1)[0]
-            setTodoTitle(this.current.title)
+        currentTodo: null,
+        todosPool: todos.concat(),
+        updateCurrentTodo() {
+            if (!this.todosPool.length) this.todosPool = todos.concat()
+
+            this.currentTodo = this.todosPool.splice(Math.floor(Math.random() * this.todosPool.length), 1)[0]
+
+            setTodoTitle(this.currentTodo.title)
         }
     }), [])
 
     useEffect(() => {
-        const app = new Application()
-        const assets = [{ alias: 'ball', src: ball }, { alias: 'background', src: background }]
-        const container = ref.current
+        (async () => {
+			const [{ Application }, { default: GameController }] = await Promise.all([import('pixi.js'), import('./game-controller')])
 
-        ;(async () => {
-            const controller = new GameController(container, assets, app)
-            await controller.setupGame()
-            await controller.preloadGame()
-            controller.installGame()
-            controller.addBackground()
-            controller.addBall()
-            controller.activateBall()
+	        const controller = new GameController(gameWrapperRef.current, new Application())
+			await controller.activateController()
 
-            controller.ball.on(controller.BALL_DROPPED, () => randomTodo.updateCurrent())
+	        controller.ball.on(GameController.BALL_DROPPED, () => randomTodo.updateCurrentTodo())
+
+		    setLoading(false)
         })()
     }, [])
 
     return (
-        <div className={'game__space'} ref={ref}>
-            <p className={'game__space-textarea'}>{ todoTitle }</p>
+        <div className={'game__space'} ref={ gameWrapperRef }>
+	        {
+		        !isLoading ?
+		        <p className={'game__space-textarea'}>{ todoTitle }</p>
+		        :
+		        <Spinner />
+	        }
         </div>
     )
 }
