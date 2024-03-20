@@ -1,8 +1,7 @@
-import { Assets, Sprite } from 'pixi.js'
+import { Assets, Container, Sprite } from 'pixi.js'
 import { gsap } from 'gsap'
 import ball from '@/public/assets/ball/ball.png'
 import background from '@/public/assets/background/background.png'
-import {traceGlobals} from 'next/dist/trace/shared';
 
 export default class GameController {
     static BALL = 'ball'
@@ -11,9 +10,11 @@ export default class GameController {
 
     constructor(container = null, app = null) {
 	    this.ballEventClick = this.ballEventClick.bind(this)
+		this.moveGameArea = this.moveGameArea.bind(this)
 
-        this.$container = container
         this.app = app
+		this.$container = container
+		this.gameArea = null
 	    this.ball = null
     }
 
@@ -21,22 +22,31 @@ export default class GameController {
 		if (!this.app || this.$container.children.length === 2) return
 		const assetsArray = [{ alias: 'ball', src: ball }, { alias: 'background', src: background } ]
 
-		await Promise.all([this.app.init(), Assets.load(assetsArray)])
+		await Promise.all([this.app.init({ resizeTo: window }), Assets.load(assetsArray)])
 
-		this.$container.insertBefore(this.app.canvas, this.$container.firstElementChild)
-
+		this.addGameArea()
 		this.addBackground()
 		this.addBall()
 		this.activateBall()
+		this.windowResize()
+		this.moveGameArea()
+
+		this.$container.insertBefore(this.app.canvas, this.$container.firstElementChild)
+	}
+
+	addGameArea() {
+		this.gameArea = new Container()
+
+		this.app.stage.addChild(this.gameArea)
 	}
 
 	addBackground() {
 		const background = Sprite.from(GameController.BACKGROUND)
 
-		background.width = this.app.screen.width
-		background.height = this.app.screen.height
+		background.width = 1000
+		background.height = 600
 
-		this.app.stage.addChild(background)
+		this.gameArea.addChild(background)
 	}
 
     addBall() {
@@ -46,16 +56,16 @@ export default class GameController {
 
 	    this.ball.anchor.set(0.5)
 
-	    this.ball.width = this.app.screen.width * 0.1
-	    this.ball.height = this.app.screen.width * 0.1
+	    this.ball.width = 50
+	    this.ball.height = 50
 
-	    this.ball.x = this.app.screen.width / 2
-	    this.ball.y = this.app.screen.height * 0.9
+	    this.ball.x = this.gameArea.width / 2
+	    this.ball.y = this.gameArea.height - 50
 
 	    this.ball.interactive = true
 	    this.ball.buttonMode = true
 
-        this.app.stage.addChild(this.ball)
+        this.gameArea.addChild(this.ball)
     }
 
     ballEventClick() {
@@ -74,22 +84,24 @@ export default class GameController {
 			    let bounceHeight = this.app.screen.height / 2 / (i + 1)
 			    let bounceDuration = 0.5 / (i + 1)
 
-			    bounceTimeline.to(this.ball, {
+			    bounceTimeline
+				.to(this.ball, {
 				    y: this.ball.y - bounceHeight,
-				    height: this.ball.height * 1.1,
-				    width: this.ball.width * 0.9,
 				    duration: bounceDuration,
-				    ease: 'power2.out'
+				    ease: 'power2.out',
+					onStart: () => {
+						gsap.to(this.ball.scale, { x: 0.9, y: 1.1, duration: bounceDuration })
+					},
 			    })
 			    .to(this.ball, {
 				    y: this.ball.y,
-				    height: this.ball.height * 0.9,
-				    width: this.ball.width * 1.1,
 				    duration: bounceDuration,
 				    ease: 'power2.in',
+					onStart: () => {
+						gsap.to(this.ball.scale, { x: 1.1, y: 0.9, duration: bounceDuration })
+					},
 				    onComplete: () => {
-						const originSize = this.app.screen.width * 0.1
-					    gsap.to(this.ball, { width: originSize, height: originSize, duration: 0.1 })
+					    gsap.to(this.ball.scale, { x: 1, y: 1, duration: 0.1 })
 				    }
 			    })
 		    }
@@ -97,9 +109,20 @@ export default class GameController {
 
     }
 
-
 	activateBall() {
 	    this.ball.on('click', this.ballEventClick)
     }
+
+	moveGameArea() {
+		this.gameArea.pivot.x = this.gameArea.width / 2
+		this.gameArea.pivot.y = this.gameArea.height / 2
+
+		this.gameArea.x = window.innerWidth / 2
+		this.gameArea.y = window.innerHeight / 2
+	}
+
+	windowResize() {
+		window.addEventListener('resize', this.moveGameArea)
+	}
 }
 

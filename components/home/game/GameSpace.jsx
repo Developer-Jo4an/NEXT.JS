@@ -25,7 +25,8 @@ const GameSpace = () => {
 
     useEffect(() => {
         (async () => {
-			const [{ Application }, { default: GameController }] = await Promise.all([import('pixi.js'), import('./game-controller')])
+            const { Application } = await import('pixi.js')
+            const { default: GameController } = await import('./game-controller')
 
 	        const controller = new GameController(gameWrapperRef.current, new Application())
 			await controller.activateController()
