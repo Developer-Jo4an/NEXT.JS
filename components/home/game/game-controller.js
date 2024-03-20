@@ -2,6 +2,7 @@ import { Assets, Sprite } from 'pixi.js'
 import { gsap } from 'gsap'
 import ball from '@/public/assets/ball/ball.png'
 import background from '@/public/assets/background/background.png'
+import {traceGlobals} from 'next/dist/trace/shared';
 
 export default class GameController {
     static BALL = 'ball'
@@ -58,26 +59,46 @@ export default class GameController {
     }
 
     ballEventClick() {
-        if (!this.ball.isAnimation) {
-	        this.ball.isAnimation = true
-            gsap.to(
-	            this.ball,
-                {
-                    y: this.ball.y - this.app.screen.height / 2,
-                    duration: 0.5,
-                    ease: 'power2.out'
-                }
-            )
-            .yoyo(true)
-            .repeat(1)
-            .then(() => {
-	            this.ball.isAnimation = false
-	            this.ball.emit(GameController.BALL_DROPPED)
-            })
-        }
+	    if (!this.ball.isAnimation) {
+		    this.ball.isAnimation = true
+
+		    let bounceTimeline = gsap.timeline({
+			    onComplete: () => {
+				    this.ball.isAnimation = false
+				    this.ball.emit(GameController.BALL_DROPPED)
+			    }
+		    })
+
+
+		    for (let i = 0; i < 12; i++) {
+			    let bounceHeight = this.app.screen.height / 2 / (i + 1)
+			    let bounceDuration = 0.5 / (i + 1)
+
+			    bounceTimeline.to(this.ball, {
+				    y: this.ball.y - bounceHeight,
+				    height: this.ball.height * 1.1,
+				    width: this.ball.width * 0.9,
+				    duration: bounceDuration,
+				    ease: 'power2.out'
+			    })
+			    .to(this.ball, {
+				    y: this.ball.y,
+				    height: this.ball.height * 0.9,
+				    width: this.ball.width * 1.1,
+				    duration: bounceDuration,
+				    ease: 'power2.in',
+				    onComplete: () => {
+						const originSize = this.app.screen.width * 0.1
+					    gsap.to(this.ball, { width: originSize, height: originSize, duration: 0.1 })
+				    }
+			    })
+		    }
+	    }
+
     }
 
-    activateBall() {
+
+	activateBall() {
 	    this.ball.on('click', this.ballEventClick)
     }
 }
