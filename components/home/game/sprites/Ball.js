@@ -2,21 +2,23 @@ import { Sprite } from 'pixi.js'
 import { gsap } from 'gsap'
 
 export class Ball extends Sprite {
-    constructor(texture) {
+    constructor(texture, area, emitter) {
         super(texture)
+        this.area = area
+        this.emitter = emitter
         this.isAnimation = false
         this.interactive = true
         this.buttonMode = true
     }
 
-    animation(area, emitter) {
+    animation() {
         if (!this.isAnimation) {
             this.isAnimation = true
 
             let bounceTimeline = gsap.timeline({
                 onComplete: () => {
                     this.isAnimation = false
-                    this.emit(emitter)
+                    this.emit(this.emitter)
                 }
             })
 
@@ -30,7 +32,7 @@ export class Ball extends Sprite {
             const magnificationMultiplier = 1.1
 
             for (let i = 0; i < 12; i++) {
-                let bounceHeight = area.height / 2 / (i + 1)
+                let bounceHeight = this.area.height / 2 / (i + 1)
                 let bounceDuration = 0.5 / (i + 1)
 
                 bounceTimeline
@@ -73,12 +75,14 @@ export class Ball extends Sprite {
         }
     }
 
-    static ballFrom(texture, area) {
-        const ball = new Ball(texture)
-        ball.width = area.width / 15
-        ball.height = area.width / 15
+    static ballFrom(texture, area, emitter, config,) {
+        const ball = new Ball(texture, area, emitter)
+
+        for (const key in config) if (key in ball) ball[key] = config[key]
+
         ball.anchor.set(0.5)
-        ball.y = (area.height / 2) - ball.width
+
+        ball.on('click', ball.animation)
 
         return ball
     }
