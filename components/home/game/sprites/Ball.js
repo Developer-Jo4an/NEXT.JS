@@ -40,7 +40,7 @@ export class Ball extends Sprite {
                         gsap.to(this.scale, {
                             x: currentState.scaleX * reductionMultiplier,
                             y: currentState.scaleY * magnificationMultiplier,
-                            duration: bounceDuration
+                            duration: bounceDuration * 2
                         })
                     },
                 })
@@ -52,7 +52,7 @@ export class Ball extends Sprite {
                         gsap.to(this.scale, {
                             x: currentState.scaleX * magnificationMultiplier,
                             y: currentState.scaleY * reductionMultiplier,
-                            duration: bounceDuration
+                            duration: bounceDuration * 2
                         })
                     },
                     onComplete: () => {
