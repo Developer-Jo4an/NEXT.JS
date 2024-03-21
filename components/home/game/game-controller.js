@@ -1,44 +1,36 @@
 import { Assets, Container, Sprite } from 'pixi.js'
-import ball from '@/public/assets/ball/ball.png'
-import background from '@/public/assets/background/background.png'
+import ball from '../../../public/assets/ball/ball.png'
+import back from '../../../public/assets/background/background.png'
 import { Ball } from '@/components/home/game/sprites/Ball'
 
 export default class GameController {
-    static BALL = 'ball'
-    static BACKGROUND = 'background'
-    static BALL_DROPPED = 'ball-dropped'
+	static BALL_DROPPED = 'ball-dropped'
 
-    constructor(container = null, app = null) {
+	constructor(container = null, app = null) {
 		if (!GameController.instance) GameController.instance = this
 
 		this.resizeApp = this.resizeApp.bind(this)
-	    this.ballEventClick = this.ballEventClick.bind(this)
+		this.ballEventClick = this.ballEventClick.bind(this)
 
-        this.app = app
+		this.app = app
 		this.$container = container
 		this.gameArea = null
-	    this.ball = null
-    }
+		this.ball = null
+	}
 
 	async activateController() {
-		const assetsArray = [
-			{ alias: 'ball', src: ball },
-			{ alias: 'background', src: background }
-		]
+		await this.app.init({ width: this.$container.offsetWidth, height: this.$container.offsetHeight })
+		await this.addGameArea()
+		await this.addBall()
 
-		await this.app.init({ width: this.$container.offsetWidth,  height: this.$container.offsetHeight })
-
-		await Assets.load(assetsArray)
-
-		this.addGameArea()
-		this.addBall()
 		this.attach()
 
 		this.$container.insertBefore(this.app.canvas, this.$container.firstElementChild)
 	}
 
-	addGameArea() {
-		const background = Sprite.from(GameController.BACKGROUND)
+	async addGameArea() {
+		const texture = await Assets.load(back)
+		const background = new Sprite(texture)
 
 		background.anchor.set(0.5)
 		background.width = +this.$container.offsetWidth
@@ -54,18 +46,14 @@ export default class GameController {
 		this.app.stage.addChild(this.gameArea)
 	}
 
-    addBall() {
-		this.ball = Ball.ballFrom(GameController.BALL)
-
-		this.ball.width = this.gameArea.width / 15
-		this.ball.height = this.gameArea.width / 15
-
-		this.ball.y = (this.gameArea.height / 2) - this.ball.width
+	async addBall() {
+		const texture = await Assets.load(ball)
+		this.ball = Ball.ballFrom(texture, this.gameArea)
 
 		this.gameArea.addChild(this.ball)
 	}
 
-    ballEventClick() { this.ball.animation(this.gameArea, GameController.BALL_DROPPED) }
+	ballEventClick() { this.ball.animation(this.gameArea, GameController.BALL_DROPPED) }
 
 	resizeApp() {
 		const width = +this.$container.offsetWidth
@@ -100,7 +88,7 @@ export default class GameController {
 	}
 
 	attach() {
-	    this.ball.on('click', this.ballEventClick)
+		this.ball.on('click', this.ballEventClick)
 		window.addEventListener('resize', this.resizeApp)
 	}
 }
