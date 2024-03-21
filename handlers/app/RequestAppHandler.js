@@ -31,7 +31,7 @@ export class RequestAppHandler {
 	        state.location = GAME_LOCATION
         },
         rejected: (state, action) => {
-	        const { status, data } = action.payload.response
+            const { status, data } = action.payload.response
 
 	        if (status === BAD_REQUEST_400) { state.error = { message: data.message }; return }
 

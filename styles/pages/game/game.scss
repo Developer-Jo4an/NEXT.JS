@@ -3,6 +3,8 @@
 }
 
 .game__space {
+    max-width: 100vw;
+    max-height: 100vh;
     flex-grow: 1;
 
     display: flex;
@@ -12,6 +14,8 @@
     position: relative;
 
     canvas {
+        width: 100%;
+        height: 100%;
     }
 }
 .game__space-textarea {
