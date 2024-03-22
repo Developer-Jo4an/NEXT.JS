@@ -9,81 +9,52 @@ export class Ball extends Sprite {
         this.isAnimation = false
         this.interactive = true
         this.buttonMode = true
+
+        this.width = 50
+        this.height = 50
+        this.anchor.set(0.5)
+        this.on('click', this.animation)
+        this.x = this.area.width * 0.5
+        this.y = this.area.height - 50
     }
 
     animation() {
-        if (!this.isAnimation) {
-            this.isAnimation = true
+        if (this.isAnimation) return true
 
-            let bounceTimeline = gsap.timeline({
-                onComplete: () => {
-                    this.isAnimation = false
-                    this.emit(this.emitter)
-                }
-            })
+        this.isAnimation = true
 
-            const currentState = {
-                scaleY: this.scale.y,
-                scaleX: this.scale.x,
-                y: this.y
+        const animation = gsap.timeline({
+            onComplete: () => {
+                this.isAnimation = false
+                this.emit(this.emitter)
             }
+        })
 
-            const reductionMultiplier = 0.9
-            const magnificationMultiplier = 1.1
-
-            for (let i = 0; i < 12; i++) {
-                let bounceHeight = this.area.height / 2 / (i + 1)
-                let bounceDuration = 0.5 / (i + 1)
-
-                bounceTimeline
-                .to(this, {
-                    y: this.y - bounceHeight,
-                    duration: bounceDuration,
-                    ease: 'power2.out',
-                    onStart: () => {
-                        gsap.to(this.scale, {
-                            x: currentState.scaleX * reductionMultiplier,
-                            y: currentState.scaleY * magnificationMultiplier,
-                            duration: bounceDuration * 2
-                        })
-                    },
+        animation
+        .to(this, {
+            y: this.y - 300,
+            ease: 'power.out',
+            duration: 0.5,
+            onStart: () => {
+                gsap.to(this.scale, {
+                    y: this.scale.y * 1.1,
+                    x: this.scale.x * 0.9
                 })
-                .to(this, {
-                    y: this.y + this.height * magnificationMultiplier * 0.1,
-                    duration: bounceDuration,
-                    ease: 'power2.in',
-                    onStart: () => {
-                        gsap.to(this.scale, {
-                            x: currentState.scaleX * magnificationMultiplier,
-                            y: currentState.scaleY * reductionMultiplier,
-                            duration: bounceDuration * 2
-                        })
-                    },
-                    onComplete: () => {
-                        gsap.to(this.scale, {
-                            x: currentState.scaleX,
-                            y: currentState.scaleY,
-                            duration: 0.1
-                        })
-                    }
+            },
+        })
+        .to(this, {
+            y: this.y,
+            ease: 'bounce.out',
+            duration: 1,
+            onStart: () => {
+                gsap.to(this.scale, {
+                    y: this.scale.y * 0.9,
+                    x: this.scale.x * 1.1
                 })
-            }
-            bounceTimeline.to(this, {
-                y: currentState.y,
-                duration: 0.1
-            })
-        }
-    }
-
-    static ballFrom(texture, area, emitter, config,) {
-        const ball = new Ball(texture, area, emitter)
-
-        for (const key in config) if (key in ball) ball[key] = config[key]
-
-        ball.anchor.set(0.5)
-
-        ball.on('click', ball.animation)
-
-        return ball
+            },
+        }).to(this.scale, {
+            y: this.scale.y,
+            x: this.scale.x
+        })
     }
 }
