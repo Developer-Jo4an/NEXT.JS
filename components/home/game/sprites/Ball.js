@@ -55,26 +55,7 @@ export class Ball extends Sprite {
 						duration: bounceDuration * 2
 					})
 				},
-			})
-			.to(this, {
-				y: this.y + this.height * magnificationMultiplier * 0.1,
-				duration: bounceDuration,
-				ease: 'power2.in',
-				onStart: () => {
-					gsap.to(this.scale, {
-						x: currentState.scaleX * magnificationMultiplier,
-						y: currentState.scaleY * reductionMultiplier,
-						duration: bounceDuration * 2
-					})
-				},
-				onComplete: () => {
-					gsap.to(this.scale, {
-						x: currentState.scaleX,
-						y: currentState.scaleY,
-						duration: 0.1
-					})
-				}
-			})
+			}).yoyo()
 		}
 		bounceTimeline.to(this, {
 			y: currentState.y,
