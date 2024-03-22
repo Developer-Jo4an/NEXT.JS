@@ -30,11 +30,6 @@ export class Ball extends Sprite {
             }
         })
 
-        const defaultScale = {
-            x: this.scale.x,
-            y: this.scale.y
-        }
-
         animation
         .to(this, {
             y: this.y - 300,
@@ -42,8 +37,8 @@ export class Ball extends Sprite {
             duration: 0.5,
             onStart: () => {
                 gsap.to(this.scale, {
-                    y: defaultScale.y * 1.1,
-                    x: defaultScale.x * 0.9
+                    y: this.scale.y * 1.1,
+                    x: this.scale.x * 0.9
                 })
             },
         })
@@ -53,13 +48,13 @@ export class Ball extends Sprite {
             duration: 1,
             onStart: () => {
                 gsap.to(this.scale, {
-                    y: defaultScale.y * 0.9,
-                    x: defaultScale.x * 1.1
+                    y: this.scale.y * 0.9,
+                    x: this.scale.x * 1.1
                 })
             },
         }).to(this.scale, {
-            y: defaultScale.y,
-            x: defaultScale.x
+            y: this.scale.y,
+            x: this.scale.x
         })
     }
 }
