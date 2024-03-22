@@ -1,89 +1,84 @@
-import { Sprite } from 'pixi.js'
-import { gsap } from 'gsap'
+import {Sprite} from 'pixi.js'
+import {gsap} from 'gsap'
 
 export class Ball extends Sprite {
-    constructor(texture, area, emitter) {
-        super(texture)
-        this.area = area
-        this.emitter = emitter
-        this.isAnimation = false
-        this.interactive = true
-        this.buttonMode = true
-    }
+	constructor(texture, area, emitter) {
+		super(texture)
+		this.area = area
+		this.emitter = emitter
+		this.isAnimation = false
+		this.interactive = true
+		this.buttonMode = true
 
-    animation() {
-        if (!this.isAnimation) {
-            this.isAnimation = true
+		this.width = 50
+		this.height = 50
+		this.anchor.set(0.5)
+		this.on('click', this.animation)
+		this.x = this.area.width * 0.5
+		this.y = this.area.height - 50
+	}
 
-            let bounceTimeline = gsap.timeline({
-                onComplete: () => {
-                    this.isAnimation = false
-                    this.emit(this.emitter)
-                }
-            })
+	animation() {
+		if (this.isAnimation) return true
 
-            const currentState = {
-                scaleY: this.scale.y,
-                scaleX: this.scale.x,
-                y: this.y
-            }
+		this.isAnimation = true
 
-            const reductionMultiplier = 0.9
-            const magnificationMultiplier = 1.1
+		let bounceTimeline = gsap.timeline({
+			onComplete: () => {
+				this.isAnimation = false
+				this.emit(this.emitter)
+			}
+		})
 
-            for (let i = 0; i < 12; i++) {
-                let bounceHeight = this.area.height / 2 / (i + 1)
-                let bounceDuration = 0.5 / (i + 1)
+		const currentState = {
+			scaleY: this.scale.y,
+			scaleX: this.scale.x,
+			y: this.y
+		}
 
-                bounceTimeline
-                .to(this, {
-                    y: this.y - bounceHeight,
-                    duration: bounceDuration,
-                    ease: 'power2.out',
-                    onStart: () => {
-                        gsap.to(this.scale, {
-                            x: currentState.scaleX * reductionMultiplier,
-                            y: currentState.scaleY * magnificationMultiplier,
-                            duration: bounceDuration * 2
-                        })
-                    },
-                })
-                .to(this, {
-                    y: this.y + this.height * magnificationMultiplier * 0.1,
-                    duration: bounceDuration,
-                    ease: 'power2.in',
-                    onStart: () => {
-                        gsap.to(this.scale, {
-                            x: currentState.scaleX * magnificationMultiplier,
-                            y: currentState.scaleY * reductionMultiplier,
-                            duration: bounceDuration * 2
-                        })
-                    },
-                    onComplete: () => {
-                        gsap.to(this.scale, {
-                            x: currentState.scaleX,
-                            y: currentState.scaleY,
-                            duration: 0.1
-                        })
-                    }
-                })
-            }
-            bounceTimeline.to(this, {
-                y: currentState.y,
-                duration: 0.1
-            })
-        }
-    }
+		const reductionMultiplier = 0.9
+		const magnificationMultiplier = 1.1
 
-    static ballFrom(texture, area, emitter, config,) {
-        const ball = new Ball(texture, area, emitter)
+		for (let i = 0; i < 12; i++) {
+			let bounceHeight = this.area.height / 2 / (i + 1)
+			let bounceDuration = 0.5 / (i + 1)
 
-        for (const key in config) if (key in ball) ball[key] = config[key]
-
-        ball.anchor.set(0.5)
-
-        ball.on('click', ball.animation)
-
-        return ball
-    }
+			bounceTimeline
+			.to(this, {
+				y: this.y - bounceHeight,
+				duration: bounceDuration,
+				ease: 'power2.out',
+				onStart: () => {
+					gsap.to(this.scale, {
+						x: currentState.scaleX * reductionMultiplier,
+						y: currentState.scaleY * magnificationMultiplier,
+						duration: bounceDuration * 2
+					})
+				},
+			})
+			.to(this, {
+				y: this.y + this.height * magnificationMultiplier * 0.1,
+				duration: bounceDuration,
+				ease: 'power2.in',
+				onStart: () => {
+					gsap.to(this.scale, {
+						x: currentState.scaleX * magnificationMultiplier,
+						y: currentState.scaleY * reductionMultiplier,
+						duration: bounceDuration * 2
+					})
+				},
+				onComplete: () => {
+					gsap.to(this.scale, {
+						x: currentState.scaleX,
+						y: currentState.scaleY,
+						duration: 0.1
+					})
+				}
+			})
+		}
+		bounceTimeline.to(this, {
+			y: currentState.y,
+			duration: 0.1
+		})
+	}
 }

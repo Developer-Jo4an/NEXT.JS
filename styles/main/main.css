@@ -186,10 +186,6 @@ main {
   align-items: center;
   position: relative;
 }
-.game__space canvas {
-  width: 100%;
-  height: 100%;
-}
 
 .game__space-textarea {
   position: absolute;

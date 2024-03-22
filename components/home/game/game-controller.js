@@ -1,4 +1,4 @@
-import { Assets, Container, Sprite } from 'pixi.js'
+import { Assets, Sprite } from 'pixi.js'
 import ball from '../../../public/assets/ball/ball.png'
 import back from '../../../public/assets/background/background.png'
 import { Ball } from '@/components/home/game/sprites/Ball'
@@ -11,12 +11,14 @@ export default class GameController {
 
 		this.app = app
 		this.$container = container
-		this.gameArea = null
 		this.ball = null
 	}
 
 	async activateController() {
-		await this.app.init({ width: this.$container.offsetWidth, height: this.$container.offsetHeight })
+		await this.app.init({
+			width: this.$container.offsetWidth,
+			height: this.$container.offsetHeight
+		})
 		await this.addGameArea()
 		await this.addBall()
 		this.resizeHandler()
@@ -28,58 +30,45 @@ export default class GameController {
 		const texture = await Assets.load(back)
 		const background = new Sprite(texture)
 
-		background.anchor.set(0.5)
 		background.width = +this.$container.offsetWidth
 		background.height = +this.$container.offsetHeight
 
-		const gameArea = new Container()
+		this.app.stage.addChild(background)
 
-		gameArea.x = this.$container.offsetWidth / 2
-		gameArea.y = this.$container.offsetHeight / 2
-		gameArea.ratio = background.width / background.height
+		const sizes = {
+			appWidth: this.app.screen.width,
+			appHeight: this.app.screen.height,
+			stageWidth: this.app.stage.width,
+			stageHeight: this.app.stage.height,
+		}
 
-		gameArea.addChild(background)
-
-		this.app.stage.addChild(this.gameArea = gameArea)
+		this.app.stage.x = 0.5 * (sizes.appWidth - sizes.stageWidth)
+		this.app.stage.y = 0.5 * (sizes.appHeight - sizes.stageHeight)
 	}
 
 	async addBall() {
 		const texture = await Assets.load(ball)
 
-		const ballSize = this.gameArea.width / 15
-
-		const animationBall = Ball.ballFrom(
+		const animationBall = new Ball(
 			texture,
-			this.gameArea,
-			GameController.BALL_DROPPED,
-			{
-				width: ballSize,
-				height: ballSize,
-			}
+			this.app.stage,
+			GameController.BALL_DROPPED
 		)
 
-		this.gameArea.addChild(this.ball = animationBall)
+		this.app.stage.addChild(this.ball = animationBall)
 	}
 	resizeHandler() { window.addEventListener('resize',  function () {
 		const width = +this.$container.offsetWidth
 		const height = +this.$container.offsetHeight
-		const areaWidth = this.gameArea.width
-		const areaHeight = this.gameArea.height
+		const areaWidth = this.app.screen.width
+		const areaHeight = this.app.screen.height
 
 		this.app.renderer.resize(width, height)
 
-		if (width < areaWidth || height > areaHeight) {
-			this.gameArea.width = width
-			this.gameArea.height = width / this.gameArea.ratio
-		}
+		const multiplier = Math.min(areaWidth / width, areaHeight / height)
 
-		if (height < areaHeight || width > areaWidth) {
-			this.gameArea.height = height
-			this.gameArea.width = height * this.gameArea.ratio
-		}
+		this.app.stage.scale.set(this.app.stage.scale.x * multiplier, this.app.stage.scale.y * multiplier)
 
-		this.gameArea.x = 0.5 * (width - this.gameArea.width) + (this.gameArea.width / 2)
-		this.gameArea.y = 0.5 * (height - this.gameArea.height) + (this.gameArea.height / 2)
 	}.bind(this)) }
 }
 
